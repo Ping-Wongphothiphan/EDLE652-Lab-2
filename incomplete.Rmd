@@ -124,3 +124,24 @@ ggplot(data2longer, aes(date, share))+
   
 ```
 
+
+Insert annotates, title, caption
+```{r}
+
+ggplot(data2longer, aes(date, share))+
+  geom_ribbon(aes(ymin = 0, ymax = share, fill = states, group = rev(states)))+
+  scale_fill_manual("states", values = c("turquoise3", "darkorange2", "violetred1"))+
+  geom_segment(data =df, aes(x = date_landfall, xend = date_landfall, y = 0, yend = Inf), color = "grey66", linetype = "dotted", size = 1, alpha = 1)+
+  annotate("text", x = as.Date("2017-08-25"), y = 3, label = "Texas", size = 8, vjust = 4, hjust = -.1)+
+  annotate("text", x = as.Date("2017-08-25"), y = 3, label = "Florida", size = 8, vjust = 5, hjust = -1.2)+
+  annotate("text", x = as.Date("2017-08-25"), y = 3, label = "Puerto Rico", size = 8, vjust = 2.5, hjust = -1.25)+
+  
+  labs(title = "National cable news networks", x = "", y = "", caption = "Includes Bloomberg, CNBC, CNN, Fox Business, Fox News and MSNBC")+
+  theme(plot.title = element_text(size = 18,face = "bold", hjust = 0.5), 
+        legend.position = "none",
+        panel.background = element_blank(),
+        panel.grid.major = element_line(color = "grey92"),
+        axis.text = element_text(family = "mono"), 
+        plot.caption = element_text(hjust = 0, color = "grey80"))
+```
+
