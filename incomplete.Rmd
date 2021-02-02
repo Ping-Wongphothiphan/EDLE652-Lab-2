@@ -145,3 +145,30 @@ ggplot(data2longer, aes(date, share))+
         plot.caption = element_text(hjust = 0, color = "grey80"))
 ```
 
+Use the comic_characters dataset to visualize the proportion of different genders using at least three different methods. 
+
+Import dataset
+
+```{r}
+data3<-comic_characters
+```
+
+Plot4: Percentages of gender representation by publishers 
+
+Create a new data frame representing the number of cases grouped by gender and publishers and percentages
+```{r}
+genderperpub<-data3 %>% 
+  #creae a new variable representing each gender within each publisher
+  group_by(sex, publisher) %>% 
+  summarize(count = n()) %>% 
+  arrange(desc(count)) %>% 
+  #create a new variable representing publisher
+  group_by(publisher) %>% 
+  mutate(total = sum(count)) %>% 
+  #create a new variable representing the percentage of gender within each publisher relative to all publishers
+  group_by(sex) %>% 
+  mutate(percent = (100*count/total)
+  )
+
+```
+
