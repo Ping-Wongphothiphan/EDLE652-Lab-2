@@ -189,3 +189,16 @@ ggplot(genderperpub %>% filter(!is.na(sex)), aes(fct_reorder(sex, percent), y = 
   coord_flip()
 ```
 
+Plot 4 polished
+
+```{r}
+ggplot(genderperpub %>% filter(!is.na(sex)), aes(fct_reorder(sex, percent), y = percent, fill = publisher))+
+  geom_bar(position = "dodge", stat = "identity", na.rm =  TRUE)+
+  coord_flip()+
+  labs(title = "Gender representation in DC and Marvel", x  = "Gender", y  = "Percentage")+
+  theme(plot.title = element_text(size = 18,face = "bold", hjust = 0.7),
+        panel.background = element_blank(),
+        panel.grid.major = element_line(color = "grey92"),
+        axis.text = element_text(family = "mono"))
+```
+
