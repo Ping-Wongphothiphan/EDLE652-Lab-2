@@ -112,3 +112,15 @@ ggplot(data2longer, aes(date, share))+
   geom_ribbon(aes(ymin = 0, ymax = share, fill = states, group = rev(states)))
 ```
 
+Change color and add vlines
+
+```{r}
+ggplot(data2longer, aes(date, share))+
+  geom_ribbon(aes(ymin = 0, ymax = share, fill = states, group = rev(states)))+
+  scale_fill_manual("states", values = c("turquoise3", "darkorange2", "violetred1"))+
+  geom_vline(data =df, aes(xintercept = date_landfall), color = "grey66", linetype = "dotted", size = 1, alpha = 1)+
+  labs(title = "National cable news networks", font = "")+
+  theme(plot.title = element_text(size = 18), legend.position = "none", panel.background = element_blank(), panel.grid.major = element_line(color = "grey92"))
+  
+```
+
