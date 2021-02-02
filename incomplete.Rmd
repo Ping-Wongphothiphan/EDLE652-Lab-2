@@ -1,0 +1,55 @@
+---
+title: "draft 1"
+author: "Ping"
+date: "1/27/2021"
+output: html_document
+---
+```{r}
+library(fivethirtyeight)
+library(fivethirtyeightdata)
+library(dplyr)
+library(tidyverse)
+```
+1. Google Trends dataset
+```{r}
+ggtrends<-google_trends
+tvstates<-tv_states
+```
+
+```{r}
+ggtrends_longer<-ggtrends %>% 
+  pivot_longer("hurricane_harvey_us" : "hurricane_jose_us",
+               names_to = "hurricane",
+               values_to = "coverage")
+```
+1.1
+```{r}
+ggplot(ggtrends_longer, aes(date, coverage))+
+  geom_line(aes(color = hurricane))
+```
+1.2
+```{r}
+ggplot(ggtrends_longer, aes(date, coverage))+
+  geom_line(aes(fill = hurricane), color = "white") + 
+  geom_ribbon(aes(ymin = 0, ymax = coverage, fill = hurricane), alpha  = 0.5)+
+  theme_minimal()+
+  labs(title = "News Coverage about Hurricanes in the US on Google Trends", subtitle = "From August to September 2017", x = "Date", y = "Numbers of news coverage", caption = "Data source: fivethrityetight")+
+  scale_fill_discrete(name = "Hurricane", labels = c("Harvey", "Irma", "Jose", "Maria"))
+```
+
+1.3
+
+```{r}
+ggplot(ggtrends_longer, aes(date, hurricane))+
+  geom_tile(aes(fill = coverage),
+            color = "white")+
+  coord_fixed()+
+  scale_fill_viridis_c(option = "magma")+
+  theme(axis.ticks.y = element_blank()) +
+  scale_y_discrete(labels = c("Harvey", "Irma", "Jose", "Maria"))+
+  labs(X = "Date", Y = "Hurricane")
+```
+
+
+
+
