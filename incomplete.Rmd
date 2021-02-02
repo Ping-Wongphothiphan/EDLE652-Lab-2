@@ -172,3 +172,20 @@ genderperpub<-data3 %>%
 
 ```
 
+
+Plot4 draft
+
+```{r}
+ggplot(genderperpub, aes(fct_reorder(sex, percent, .desc = TRUE), y = percent, fill = publisher))+
+  geom_bar(position = "dodge", stat = "identity", na.rm =  TRUE)+
+  coord_flip()
+```
+
+Plot4 draft filter NA out
+
+```{r}
+ggplot(genderperpub %>% filter(!is.na(sex)), aes(fct_reorder(sex, percent), y = percent, fill = publisher))+
+  geom_bar(position = "dodge", stat = "identity", na.rm =  TRUE)+
+  coord_flip()
+```
+
