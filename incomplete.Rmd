@@ -10,10 +10,13 @@ library(fivethirtyeightdata)
 library(dplyr)
 library(tidyverse)
 ```
-1. Google Trends dataset
+
+
+Import datasets
 ```{r}
 ggtrends<-google_trends
 tvstates<-tv_states
+
 ```
 
 ```{r}
@@ -22,12 +25,16 @@ ggtrends_longer<-ggtrends %>%
                names_to = "hurricane",
                values_to = "coverage")
 ```
-1.1
+
+
+Plot1 draft
 ```{r}
 ggplot(ggtrends_longer, aes(date, coverage))+
   geom_line(aes(color = hurricane))
 ```
-1.2
+
+
+Plot1 polished
 ```{r}
 ggplot(ggtrends_longer, aes(date, coverage))+
   geom_line(aes(fill = hurricane), color = "white") + 
@@ -37,7 +44,7 @@ ggplot(ggtrends_longer, aes(date, coverage))+
   scale_fill_discrete(name = "Hurricane", labels = c("Harvey", "Irma", "Jose", "Maria"))
 ```
 
-1.3
+Plot2
 
 ```{r}
 ggplot(ggtrends_longer, aes(date, hurricane))+
@@ -50,6 +57,35 @@ ggplot(ggtrends_longer, aes(date, hurricane))+
   labs(X = "Date", Y = "Hurricane")
 ```
 
+Create a data frame. The hurricanes made landfall on (approximately) the following days:
 
+    Harvey: August 25, 2017
+    Irma: September 10, 2017
+    Jose: Did not make landfall
+    Maria: September 20, 2017
+    
+
+```{r}
+date_landfall <-c("2017-08-25", "2017-09-10", "NA", "2017-09-20")
+df <-tibble(
+  date_landfall,hurricane = c("Harvey", "Irma", "Jose", "Maria"))
+df$date_landfall = as.Date(df$date_landfall)
+
+```
+
+
+
+Annotate Plot1 to include the reference points with vertical lines
+```{r}
+ggplot(ggtrends_longer, aes(date, coverage))+
+  geom_line(aes(fill = hurricane), color = "white") + 
+  geom_ribbon(aes(ymin = 0, ymax = coverage, fill = hurricane), alpha  = 0.5)+
+  theme_minimal()+
+  labs(title = "News Coverage about Hurricanes in the US on Google Trends", subtitle = "From August to September 2017", x = "Date", y = "Numbers of news coverage", caption = "Data source: fivethrityetight")+
+  scale_fill_discrete(name = "Hurricane", labels = c("Harvey", "Irma", "Jose", "Maria"))+
+  geom_vline(data =df, aes(xintercept = date_landfall), color = "grey66", linetype = "dotted", size = 1, alpha = 1)
+
+
+```
 
 
