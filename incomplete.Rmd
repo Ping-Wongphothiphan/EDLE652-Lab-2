@@ -88,4 +88,27 @@ ggplot(ggtrends_longer, aes(date, coverage))+
 
 ```
 
+Replicate the “National cable news networks” plot from the story using the tv_states data. 
+
+Import data and convert to a long format
+```{r}
+data2<-tv_states
+data2longer<-data2 %>% pivot_longer(!date, names_to ="states",
+                       values_to = "share")
+```
+
+Factor states and reorder
+
+```{r}
+data2longer$states <-as.factor(data2longer$states)
+data2longer$states<-factor(data2longer$states, levels = c("puerto_rico", "texas", "florida"))
+```
+
+
+Create plot3 draft 
+```{r}
+ggplot(data2longer, aes(date, share))+
+  geom_line(aes(color = states))+
+  geom_ribbon(aes(ymin = 0, ymax = share, fill = states, group = rev(states)))
+```
 
