@@ -155,7 +155,7 @@ data3<-comic_characters
 
 Plot4: Percentages of gender representation by publishers 
 
-Create a new data frame representing the number of cases grouped by gender and publishers and percentages
+Create a new data frame representing the number of cases grouped by gender and publishers and the  percentages of gender.
 ```{r}
 genderperpub<-data3 %>% 
   #creae a new variable representing each gender within each publisher
@@ -201,4 +201,33 @@ ggplot(genderperpub %>% filter(!is.na(sex)), aes(fct_reorder(sex, percent), y = 
         panel.grid.major = element_line(color = "grey92"),
         axis.text = element_text(family = "mono"))
 ```
+
+Create Plot 5--Method 2: Heat map
+
+Create a new data frame representing the number of characters, grouped by years and gender and the percentages of gender
+```{r}
+genderperyear<-data3 %>% 
+  group_by(year, sex) %>% 
+  summarize(count = n()) %>% 
+  arrange(desc(count)) %>% 
+  group_by(year) %>% 
+  mutate(total = sum(count)) %>% 
+  group_by(sex) %>% 
+  mutate(percent = (100*count/total))
+```
+Create heat map
+```{r}
+ggplot(genderperyear %>% 
+         filter(!is.na(sex)),
+       aes(year, fct_reorder(sex, percent)))+
+  geom_tile(aes(fill = total))+
+  scale_fill_distiller(palette = "Blues")+
+  labs(title = "Number of characters by gender from 1935-2013", x  = "Gender", y  = "Year")+
+  theme(plot.title = element_text(size = 18,face = "bold", hjust = 0.7),
+        panel.background = element_blank(),
+        panel.grid.major = element_line(color = "grey92"),
+        axis.text = element_text(family = "mono"))
+```
+
+
 
